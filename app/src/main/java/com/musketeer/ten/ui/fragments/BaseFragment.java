@@ -1,4 +1,4 @@
-package ui.fragments;
+package com.musketeer.ten.ui.fragments;
 
 import android.support.v4.app.Fragment;
 import android.view.View;

@@ -1,4 +1,4 @@
-package ui.fragments;
+package com.musketeer.ten.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,11 +11,12 @@ import com.musketeer.ten.R;
 /**
  * Created by Kevin on 2016/9/20.
  */
-public class CriticFragment extends BaseFragment {
+public class MineFragment extends BaseFragment {
+    public static final String TAG = MineFragment.class.getSimpleName();
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        layout = inflater.inflate(R.layout.criticfragment,container,false);
+        layout = inflater.inflate(R.layout.minefragment,container,false);
         return layout;
     }
 }

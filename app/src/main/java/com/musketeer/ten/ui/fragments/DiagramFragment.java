@@ -1,4 +1,4 @@
-package ui.fragments;
+package com.musketeer.ten.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +12,7 @@ import com.musketeer.ten.R;
  * Created by Kevin on 2016/9/20.
  */
 public class DiagramFragment extends BaseFragment {
+    public static final String TAG = DiagramFragment.class.getSimpleName();
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
