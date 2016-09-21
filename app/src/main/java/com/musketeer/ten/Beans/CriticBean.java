@@ -1,10 +1,15 @@
 package com.musketeer.ten.Beans;
 
+import com.musketeer.ten.http.HttpParser;
+
+import org.xutils.http.annotation.HttpResponse;
+
 import java.util.List;
 
 /**
  * Created by Kevin on 2016/9/21.
  */
+@HttpResponse(parser = HttpParser.class)
 public class CriticBean {
 
 

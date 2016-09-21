@@ -4,13 +4,25 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.musketeer.ten.Beans.CriticBean;
 import com.musketeer.ten.R;
 import com.musketeer.ten.adapters.CriticAdapter;
+import com.musketeer.ten.constants.HttpConstant;
+import com.musketeer.ten.http.CriticParams;
+
+import org.xutils.DbManager;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +43,9 @@ public class CriticFragment extends BaseFragment implements Handler.Callback {
     private CriticAdapter mAdapter;
     //
     private Handler mHandler = new Handler(this);
+    //
+    DbManager.DaoConfig mConfig = new DbManager.DaoConfig()
+            .setDbName("CirticDataBase");
 
     @Nullable
     @Override
@@ -51,7 +66,7 @@ public class CriticFragment extends BaseFragment implements Handler.Callback {
      * 初始化控件
      */
     private void initView() {
-        mAdapter = new CriticAdapter(null);
+        mAdapter = new CriticAdapter(getFragmentManager(), getTempData());
         mViewpager.setAdapter(mAdapter);
     }
 
@@ -59,9 +74,7 @@ public class CriticFragment extends BaseFragment implements Handler.Callback {
      * 设置数据
      */
     private void setView() {
-        mAdapter.upDataRes(getTempData());
-
-
+        getDataFromHttp();
     }
 
     /**
@@ -69,6 +82,30 @@ public class CriticFragment extends BaseFragment implements Handler.Callback {
      */
     private void getDataFromHttp() {
 
+        RequestParams requestParams = new RequestParams(HttpConstant.CIRTIC_URL);
+
+        x.http().get(requestParams, new Callback.CommonCallback<CriticBean>() {
+            @Override
+            public void onSuccess(CriticBean result) {
+                Log.e(TAG, "onSuccess: " + result.toString());
+                
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Log.e(TAG, "onError: " + ex.getMessage());
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
     }
 
     /**
@@ -81,11 +118,15 @@ public class CriticFragment extends BaseFragment implements Handler.Callback {
     /**
      * 伪数据
      */
-    private List<View> getTempData() {
-        List<View> data = new ArrayList<>();
+    private List<Fragment> getTempData() {
+
+        List<Fragment> data = new ArrayList<>();
+
         for (int i = 0; i < 10; i++) {
 
-//            data.add(view);
+            CriticChildFragment fragment = new CriticChildFragment();
+
+            data.add(fragment);
         }
         return data;
     }

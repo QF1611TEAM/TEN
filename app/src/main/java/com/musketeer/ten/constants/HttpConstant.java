@@ -7,5 +7,9 @@ package com.musketeer.ten.constants;
  */
 public class HttpConstant {
 
+    public static final String CIRTIC_URL="http://api.shigeten.net/api/Critic/GetCriticList";
+
+
+
 
 }
