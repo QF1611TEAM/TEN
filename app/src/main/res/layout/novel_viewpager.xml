@@ -79,5 +79,4 @@
             android:text="清池蛙\r\n这里有世界上最温柔的故事"
             android:textSize="18sp"/>
     </LinearLayout>
-
 </ScrollView>

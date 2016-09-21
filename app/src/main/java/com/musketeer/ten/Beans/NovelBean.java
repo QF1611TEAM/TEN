@@ -1,8 +1,13 @@
 package com.musketeer.ten.Beans;
 
+import com.musketeer.ten.http.BeansNormalParser;
+
+import org.xutils.http.annotation.HttpResponse;
+
 /**
  * Created by Kevin on 2016/9/21.
  */
+@HttpResponse(parser = BeansNormalParser.class)
 public class NovelBean {
 
     /**
