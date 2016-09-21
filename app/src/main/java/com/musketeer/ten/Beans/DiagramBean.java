@@ -1,4 +1,4 @@
-package com.musketeer.ten.ui.Beans;
+package com.musketeer.ten.Beans;
 
 /**
  * Created by Kevin on 2016/9/21.

@@ -1,4 +1,4 @@
-package com.musketeer.ten.ui.adapters;
+package com.musketeer.ten.adapters;
 
 /**
  * Created by Kevin on 2016/9/21.

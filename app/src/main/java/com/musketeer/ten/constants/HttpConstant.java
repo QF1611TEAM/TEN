@@ -1,4 +1,4 @@
-package com.musketeer.ten.ui.constants;
+package com.musketeer.ten.constants;
 
 /**
  * Created by Kevin on 2016/9/21.

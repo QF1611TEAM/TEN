@@ -1,4 +1,4 @@
-package com.musketeer.ten.ui;
+package com.musketeer.ten;
 
 import android.app.Application;
 
