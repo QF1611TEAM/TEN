@@ -13,18 +13,18 @@
         android:layout_height="match_parent"/>
 
     <RadioGroup
-       android:layout_gravity="bottom"
-        android:gravity="center"
-        android:background="@color/main_btncontainer_background"
         android:id="@+id/main_btn_container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/main_btn_container_height"
+        android:layout_gravity="bottom"
+        android:background="@color/main_btncontainer_background"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <RadioButton
-            android:checked="true"
             android:id="@+id/btn_critic"
             style="@style/main_btn"
+            android:checked="true"
             android:drawableTop="@drawable/btn_critic_selector"/>
 
         <RadioButton
@@ -35,12 +35,12 @@
         <RadioButton
             android:id="@+id/btn_diagram"
             style="@style/main_btn"
-            android:button="@drawable/btn_diagram_selector"/>
+            android:drawableTop="@drawable/btn_diagram_selector"/>
 
         <RadioButton
             android:id="@+id/btn_mine"
             style="@style/main_btn"
-            android:button="@drawable/btn_mine_selector"/>
+            android:drawableTop="@drawable/btn_mine_selector"/>
     </RadioGroup>
 
 </FrameLayout>
