@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,10 +10,10 @@
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent"/>
 
     <RadioGroup
+       android:layout_gravity="bottom"
         android:gravity="center"
         android:background="@color/main_btncontainer_background"
         android:id="@+id/main_btn_container"
@@ -25,21 +25,21 @@
             android:checked="true"
             android:id="@+id/btn_critic"
             style="@style/main_btn"
-            android:background="@drawable/btn_critic_selector"/>
+            android:drawableTop="@drawable/btn_critic_selector"/>
 
         <RadioButton
             android:id="@+id/btn_novel"
             style="@style/main_btn"
-            android:background="@drawable/btn_novel_selector"/>
+            android:drawableTop="@drawable/btn_novel_selector"/>
 
         <RadioButton
             android:id="@+id/btn_diagram"
             style="@style/main_btn"
-            android:background="@drawable/btn_diagram_selector"/>
+            android:button="@drawable/btn_diagram_selector"/>
 
         <RadioButton
             android:id="@+id/btn_mine"
             style="@style/main_btn"
-            android:background="@drawable/btn_mine_selector"/>
+            android:button="@drawable/btn_mine_selector"/>
     </RadioGroup>
-</LinearLayout>
+</FrameLayout>

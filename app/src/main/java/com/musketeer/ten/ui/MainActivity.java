@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
+
         switch (checkedId) {
 
             case R.id.btn_critic:
