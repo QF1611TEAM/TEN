@@ -43,17 +43,26 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
         ButterKnife.bind(this);
+
         initView();
+
         initListener();
     }
 
     private void initView() {
+
         FragmentManager fragmentManager = getSupportFragmentManager();
+
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+
         mShowFragment = new CriticFragment();
-        transaction.add(R.id.fragment_container,mShowFragment,CriticFragment.TAG);
+
+        transaction.add(R.id.fragment_container, mShowFragment, CriticFragment.TAG);
+
         transaction.commit();
     }
 
@@ -68,25 +77,38 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
+
             case R.id.btn_critic:
-                switchPages(CriticFragment.TAG,CriticFragment.class);
+
+                switchPages(CriticFragment.TAG, CriticFragment.class);
+
                 break;
+
             case R.id.btn_novel:
-                switchPages(NovelFragment.TAG,NovelFragment.class);
+
+                switchPages(NovelFragment.TAG, NovelFragment.class);
+
                 break;
+
             case R.id.btn_diagram:
-                switchPages(DiagramFragment.TAG,DiagramFragment.class);
+
+                switchPages(DiagramFragment.TAG, DiagramFragment.class);
+
                 break;
+
             case R.id.btn_mine:
-                switchPages(MineFragment.TAG,MineFragment.class);
+
+                switchPages(MineFragment.TAG, MineFragment.class);
+
                 break;
         }
     }
 
     /**
      * 切换页面的封装
-     * @param tag      添加碎片的标记
-     * @param fragmentClass     添加碎片的class
+     *
+     * @param tag           添加碎片的标记
+     * @param fragmentClass 添加碎片的class
      */
     private void switchPages(String tag, Class<? extends Fragment> fragmentClass) {
 
@@ -104,10 +126,9 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         mShowFragment = fragmentManager.findFragmentByTag(tag);
 
         //如果找到了直接进行显示
-        if (mShowFragment!=null) {
+        if (mShowFragment != null) {
             transaction.show(mShowFragment);
-        }
-        else {
+        } else {
             //如果没有找到，添加到容器中并设置一个标志
             try {
 
@@ -123,15 +144,13 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
                 e.printStackTrace();
             }
 
-            transaction.add(R.id.fragment_container,mShowFragment,tag);
+            transaction.add(R.id.fragment_container, mShowFragment, tag);
 
         }
 
         transaction.commit();
 
     }
-
-
 
 
 }
