@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -23,7 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
+public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
 
     @BindView(R.id.fragment_container)
     FrameLayout mFragmentContainer;

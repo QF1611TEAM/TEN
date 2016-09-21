@@ -43,4 +43,12 @@ public class CriticAdapter extends PagerAdapter {
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
     }
+
+    public void upDataRes(List<View> data) {
+        if (data!=null) {
+            this.data.clear();
+            this.data.addAll(data);
+            notifyDataSetChanged();
+        }
+    }
 }
