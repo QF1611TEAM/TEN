@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="54dp"
+        android:orientation="vertical">
+
+
+        <TextView
+
+            android:id="@+id/novel_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="title"
+            android:textSize="28sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/novel_AuthorAndTimes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="作者: |阅读量:"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#F7F7F7"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/novel_summary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:text="车如流水马如龙，往事如春风 。 感性的人向往爱情，可是真正的爱情对于感情细腻的人很难找，不爱的人即使再爱你，也丝毫感觉不到爱情，你爱的人辜负你，更痛心"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/novel_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/text"
+            android:textSize="18sp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="10dp"
+            android:background="#eeeeee"/>
+
+        <TextView
+            android:id="@+id/novel_Author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="author"
+            android:textSize="28sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/novel_Authorbrief"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="清池蛙\r\n这里有世界上最温柔的故事"
+            android:textSize="18sp"/>
+    </LinearLayout>
+
+</ScrollView>
