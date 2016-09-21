@@ -20,12 +20,18 @@
 
 
     <ImageView
-        android:layout_width="160dp"
-        android:layout_height="140dp"
+        android:layout_width="130dp"
+        android:layout_height="110dp"
         android:layout_gravity="center"
         android:src="@mipmap/welcome_logo"/>
 
     <TextView
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="90dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="个人模仿作品"/>
 </FrameLayout>

@@ -4,13 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 
 import com.musketeer.ten.R;
-import com.nineoldandroids.view.ViewHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,7 +57,6 @@ public class SplashActivity extends BaseActivity implements Handler.Callback {
         switch (msg.what) {
 
             case START_JUMP:
-                Log.e(TAG, "handleMessage: ");
                 startActivity(new Intent(this, MainActivity.class));
                 mHandler.removeMessages(START_ANIM);
                 finish();

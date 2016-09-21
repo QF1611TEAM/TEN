@@ -20,7 +20,7 @@
             style="@style/circle_text_title_body"
             android:layout_marginTop="15dp"
             android:text="《爱，不爱》你在我身后陪我们一起看电影 我怎能不力荐"
-            android:textSize="22sp"/>
+            android:textSize="18sp"/>
 
         <TextView
             android:id="@+id/critic_author_times"
@@ -31,6 +31,7 @@
             android:text="作者：释澈鱼   |   阅读量：4678"/>
 
         <TextView
+            android:background="@color/critic_text1_background"
             android:id="@+id/critic_text1"
             style="@style/circle_text_title_body"
             android:layout_marginTop="25dp"
@@ -62,7 +63,7 @@
             style="@style/circle_text_title_body"
             android:layout_marginTop="15dp"
             android:text="你在我身后陪我们一起看电影 我怎能不力荐"
-            android:textSize="22sp"
+            android:textSize="18sp"
             android:textStyle="bold"/>
 
         <ImageView
