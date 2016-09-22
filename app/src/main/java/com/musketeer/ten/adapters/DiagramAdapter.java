@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.musketeer.ten.ui.fragments.DiagramShowFragment;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +15,8 @@ import java.util.List;
 public class DiagramAdapter extends FragmentPagerAdapter {
 
 
-    private List<Fragment> data;
-    public DiagramAdapter(FragmentManager fm,List<Fragment> data) {
+    private List<DiagramShowFragment> data;
+    public DiagramAdapter(FragmentManager fm,List<DiagramShowFragment> data) {
         super(fm);
         if (data != null) {
             this.data = data;
@@ -23,8 +25,13 @@ public class DiagramAdapter extends FragmentPagerAdapter {
         }
     }
 
+    public void addData(List<DiagramShowFragment> updata){
+        data.addAll(updata);
+        notifyDataSetChanged();
+    }
+
     @Override
-    public Fragment getItem(int position) {
+    public DiagramShowFragment getItem(int position) {
         return data.get(position);
     }
 

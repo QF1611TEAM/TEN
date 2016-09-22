@@ -7,8 +7,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
 
         <ImageView
+            android:id="@+id/diagram_image"
             android:layout_width="match_parent"
             android:layout_height="360dp"
             android:src="@mipmap/ic_launcher" />
@@ -21,6 +25,7 @@
             android:padding="40dp">
 
             <TextView
+                android:id="@+id/diagram_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="有味道的色彩"
@@ -28,6 +33,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/diagram_author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="来自艺术家HiroshiMatsumoto" />
@@ -39,6 +45,7 @@
                 android:padding="15dp">
 
                 <TextView
+                    android:id="@+id/diagram_summary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="简单说开了房间啊福欧帕斯【奥品牌佛牌否【啊安抚破佛拍哦热爱欧派热奥热【 阿尔艾欧怦然绕 热和奥普热热偶怕偷拍太柔跑肉体肉片投入怕同日阿荣添or题肉陪同怕热IT欧和热偶菩提日投入"
@@ -46,6 +53,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/diagram_source"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right"

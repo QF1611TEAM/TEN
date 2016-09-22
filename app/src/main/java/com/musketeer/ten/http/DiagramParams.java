@@ -9,7 +9,7 @@ import org.xutils.http.annotation.HttpRequest;
  *
  * http://api.shigeten.net/api/Critic/GetCriticContent?id=100035
  */
-@HttpRequest(host = "http://api.shigeten.net",path = "api/Diagram/GetDiagramList")
+@HttpRequest(host = "http://api.shigeten.net",path = "/api/Diagram/GetDiagramContent")
 public class DiagramParams extends RequestParams {
 
     public int id;

@@ -1,8 +1,13 @@
 package com.musketeer.ten.Beans;
 
+import com.musketeer.ten.http.HttpParser;
+
+import org.xutils.http.annotation.HttpResponse;
+
 /**
  * Created by Hey on 2016/9/22.
  */
+@HttpResponse(parser = HttpParser.class)
 public class DiagramBeanShow {
 
     /**

@@ -34,6 +34,8 @@ public class DiagramFragment extends BaseFragment implements View.OnClickListene
     private ViewPager mViewPager;
     private ImageView mFloatBall;
     private DiagramShowFragment diagramShowFragment;
+    List<DiagramShowFragment> data = null;
+    DiagramAdapter adapter = null;
 
     @Nullable
     @Override
@@ -48,17 +50,26 @@ public class DiagramFragment extends BaseFragment implements View.OnClickListene
         initView();
         setUpView();
     }
-    List<Integer> ids = new ArrayList<>();
     private void setUpView() {
 
         RequestParams requestParams = new RequestParams(HttpConstant.DIAGRAM_URL);
         x.http().get(requestParams, new Callback.CommonCallback<DiagramBean>() {
 
 
+            private List<DiagramBean.ResultBean> mResult;
+
             @Override
             public void onSuccess(DiagramBean result) {
-                int id = result.getResult().get(0).getId();
-                ids.add(id);
+//                int id = result.getResult().get(0).getId();
+                mResult = result.getResult();
+                for (int i = 0; i < mResult.size(); i++) {
+                    diagramShowFragment = new DiagramShowFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id",mResult.get(i).getId());
+                    diagramShowFragment.setArguments(bundle);
+                    data.add(diagramShowFragment);
+                }
+                adapter.addData(data);
             }
 
             @Override
@@ -76,7 +87,7 @@ public class DiagramFragment extends BaseFragment implements View.OnClickListene
 
             }
         });
-        Log.e(TAG, "setUpView: " + ids );
+//        Log.e(TAG, "setUpView: " + ids );
     }
 
     private void initView() {
@@ -88,14 +99,13 @@ public class DiagramFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void createFragment() {
-        List<Fragment> data = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            diagramShowFragment = new DiagramShowFragment();
-            data.add(diagramShowFragment);
-        }
-        DiagramAdapter adapter = new DiagramAdapter(getChildFragmentManager(), data);
+        data = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            diagramShowFragment = new DiagramShowFragment();
+//            data.add(diagramShowFragment);
+//        }
+        adapter = new DiagramAdapter(getChildFragmentManager(), null);
         mViewPager.setAdapter(adapter);
-
     }
 
 

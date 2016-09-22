@@ -23,7 +23,7 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#aaffffff"
+        android:background="#22999999"
         android:orientation="horizontal">
 
         <ImageView
