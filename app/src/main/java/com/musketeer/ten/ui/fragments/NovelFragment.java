@@ -1,9 +1,7 @@
 package com.musketeer.ten.ui.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,10 +14,7 @@ import com.musketeer.ten.Beans.NovelBeanList;
 import com.musketeer.ten.R;
 import com.musketeer.ten.adapters.NovelAdapter;
 import com.musketeer.ten.constants.HttpConstant;
-import com.musketeer.ten.events.NovelEvent;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -133,9 +128,11 @@ public class NovelFragment extends BaseFragment implements ViewPager.OnPageChang
     public void onPageScrollStateChanged(int state) {
 
     }
+
     public static String getLongPointDate(long lo){
         Date date = new Date(lo);
         SimpleDateFormat sd = new SimpleDateFormat("dd");
         return sd.format(date);
+
     }
 }
