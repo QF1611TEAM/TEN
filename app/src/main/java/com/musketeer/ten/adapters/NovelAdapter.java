@@ -20,12 +20,10 @@ public class NovelAdapter extends FragmentPagerAdapter{
             this.data = data;
         }
     }
-
-    @Override
-    public int getItemPosition(Object object) {
-        return super.getItemPosition(object);
+    public void upData(List<NovelViewpagerFragment> updata){
+        data.addAll(updata);
+        this.notifyDataSetChanged();
     }
-
     @Override
     public NovelViewpagerFragment getItem(int position) {
         return data.get(position);

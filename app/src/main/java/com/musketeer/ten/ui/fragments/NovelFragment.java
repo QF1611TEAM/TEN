@@ -3,6 +3,7 @@ package com.musketeer.ten.ui.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,6 +47,7 @@ public class NovelFragment extends BaseFragment implements ViewPager.OnPageChang
     ViewPager mNovelViewpager;
     private NovelAdapter adapter;
     private List<NovelBeanList.ResultBean> Results;
+    private List<NovelViewpagerFragment> data;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,21 +59,13 @@ public class NovelFragment extends BaseFragment implements ViewPager.OnPageChang
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setUpView();
         initView();
+        setUpView();
 
     }
     private void initView() {
-        List<NovelViewpagerFragment> data = new ArrayList<>();
-        for (int i = 0; i <10; i++) {
-            NovelViewpagerFragment viewpagerFragment = new NovelViewpagerFragment();
-            Bundle bundle = new Bundle();
-//            int id = Results.get(i).getId();
-            bundle.putInt("id",i);
-            viewpagerFragment.setArguments(bundle);
-            data.add(viewpagerFragment);
-        }
-        adapter = new NovelAdapter(getFragmentManager(),data);
+        data= new ArrayList<>();
+        adapter = new NovelAdapter(getFragmentManager(),null);
         mNovelViewpager.setAdapter(adapter);
         mNovelViewpager.addOnPageChangeListener(this);
     }
@@ -82,6 +76,14 @@ public class NovelFragment extends BaseFragment implements ViewPager.OnPageChang
             public void onSuccess(NovelBeanList result) {
                 Log.e(TAG, "onSuccess: 美文"+result);
                 Results=result.getResult();
+                for (int i = 0; i <Results.size(); i++) {
+                    NovelViewpagerFragment viewpagerFragment = new NovelViewpagerFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id",Results.get(i).getId());
+                    viewpagerFragment.setArguments(bundle);
+                    data.add(viewpagerFragment);
+                }
+                adapter.upData(data);
             }
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
@@ -114,6 +116,7 @@ public class NovelFragment extends BaseFragment implements ViewPager.OnPageChang
     public void onPageSelected(int position) {
         Log.e(TAG, "onPageSelected: "+position);
         Toast.makeText(getActivity(),"当前页面:"+position,Toast.LENGTH_SHORT).show();
+        Log.e(TAG, "onPageSelected: "+Results.get(position).getPublishtime());
     }
    /**
     * 在滑动状态改变的时候

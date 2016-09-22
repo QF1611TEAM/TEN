@@ -44,17 +44,13 @@ public class NovelViewpagerFragment extends BaseFragment {
         Bundle arguments = getArguments();
         int id = arguments.getInt("id",1);
         mNovelTitle.setText(id+"");
-        setUpView(id);
+//        setUpView(id);
         return layout;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initVIew();
-    }
-
-    private void initVIew() {
 
     }
 
@@ -65,6 +61,7 @@ public class NovelViewpagerFragment extends BaseFragment {
             @Override
             public void onSuccess(NovelBean result) {
                 NovelBean novelBean = result;
+                setUpUI(novelBean);
             }
 
             @Override
@@ -83,4 +80,14 @@ public class NovelViewpagerFragment extends BaseFragment {
             }
         });
     }
+
+    private void setUpUI(NovelBean novelBean) {
+        mNovelTitle.setText(novelBean.getTitle());
+        mNovelAuthorAndTimes.setText("作者:" +novelBean.getAuthor()+" | 阅读量:"+novelBean.getTimes());
+        mNovelSummary.setText(novelBean.getSummary());
+        mNovelText.setText(novelBean.getText());
+        mNovelAuthor.setText(novelBean.getAuthor());
+        mNovelAuthorbrief.setText(novelBean.getAuthorbrief());
+    }
+
 }
