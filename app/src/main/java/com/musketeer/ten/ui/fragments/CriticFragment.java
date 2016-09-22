@@ -39,9 +39,9 @@ import butterknife.ButterKnife;
  */
 public class CriticFragment extends BaseFragment implements Handler.Callback {
     public static final String TAG = CriticFragment.class.getSimpleName();
+
     @BindView(R.id.critic_viewpager)
     ViewPager mViewpager;
-
     //
     private CriticAdapter mAdapter;
     //
@@ -69,6 +69,8 @@ public class CriticFragment extends BaseFragment implements Handler.Callback {
 
         setView();
     }
+
+
 
     /**
      * 初始化控件

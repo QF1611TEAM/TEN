@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/critic_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,10 +16,10 @@
             style="@style/critic_image"/>
 
         <TextView
-            android:textColor="@color/main_btncontainer_background"
             android:id="@+id/title_critic"
             style="@style/circle_text_title_body"
             android:layout_marginTop="15dp"
+            android:textColor="@color/main_btncontainer_background"
             android:textSize="21sp"/>
 
         <TextView
@@ -29,22 +31,25 @@
             android:textSize="12sp"/>
 
         <TextView
-            android:background="@color/critic_text1_background"
             android:id="@+id/critic_text1"
             style="@style/circle_text_title_body"
             android:layout_marginTop="25dp"
+            android:background="@color/critic_text1_background"
             android:padding="@dimen/activity_horizontal_margin"
             android:textSize="14sp"/>
 
         <TextView
             style="@style/circle_text_title_body"
             android:layout_marginTop="15dp"
+            android:text="剧情简介"
             android:textSize="22sp"
             android:textStyle="bold"/>
 
         <ImageView
             android:id="@+id/critic_image1"
             style="@style/critic_image"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="10dp"/>
 
         <TextView
@@ -61,48 +66,57 @@
 
         <ImageView
             android:id="@+id/critic_image2"
-            android:layout_marginTop="10dp"
-            style="@style/critic_image"/>
+            style="@style/critic_image"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="10dp"/>
 
         <TextView
             android:id="@+id/critic_text3"
             style="@style/circle_text_title_body"
             android:layout_marginTop="15dp"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textSize="16sp"/>
+
         <TextView
             android:id="@+id/critic_text4"
             style="@style/circle_text_title_body"
             android:layout_marginTop="15dp"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textSize="16sp"/>
+
         <TextView
             android:id="@+id/critic_text5"
             style="@style/circle_text_title_body"
             android:layout_marginTop="15dp"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
-        <ImageView
-            android:id="@+id/critic_image3"
-            android:layout_marginTop="10dp"
-            style="@style/critic_image"/>
-        <ImageView
-            android:id="@+id/critic_image4"
-            android:layout_marginTop="10dp"
-            style="@style/critic_image"/>
-        <TextView
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:id="@+id/critic_author"
-            android:textStyle="bold"
-            style="@style/circle_text_title_body"
             android:textSize="16sp"/>
 
-        <TextView
-            android:layout_marginTop="15dp"
+        <ImageView
+            android:id="@+id/critic_image3"
+            style="@style/critic_image"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="10dp"/>
+
+        <ImageView
+            android:id="@+id/critic_image4"
+            style="@style/critic_image"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/critic_author"
+            style="@style/circle_text_title_body"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/main_btncontainer_background"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <TextView
             android:id="@+id/critic_authorbrief"
             style="@style/circle_text_title_body"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="15dp"
             android:textSize="16sp"/>
     </LinearLayout>
 </ScrollView>

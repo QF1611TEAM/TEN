@@ -1,5 +1,7 @@
 package com.musketeer.ten.ui.fragments;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -7,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.musketeer.ten.Beans.CriticBean;
@@ -14,6 +19,7 @@ import com.musketeer.ten.Beans.CriticBeanBody;
 import com.musketeer.ten.R;
 import com.musketeer.ten.constants.HttpConstant;
 import com.musketeer.ten.http.CriticParams;
+import com.musketeer.ten.ui.MainActivity;
 import com.squareup.picasso.Picasso;
 
 import org.xutils.DbManager;
@@ -21,6 +27,7 @@ import org.xutils.common.Callback;
 import org.xutils.ex.DbException;
 import org.xutils.x;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import butterknife.BindView;
@@ -29,6 +36,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Kevin on 2016/9/21.
  */
+@TargetApi(Build.VERSION_CODES.M)
 public class CriticChildFragment extends BaseFragment {
 
     private static final String TAG = CriticFragment.class.getSimpleName();
@@ -63,6 +71,8 @@ public class CriticChildFragment extends BaseFragment {
     TextView mCriticAuthor;
     @BindView(R.id.critic_authorbrief)
     TextView mCriticAuthorbrief;
+    @BindView(R.id.critic_scroll)
+    ScrollView mCriticScroll;
     //
     private String id;
     //
@@ -82,16 +92,18 @@ public class CriticChildFragment extends BaseFragment {
         ButterKnife.bind(this, layout);
 
         Bundle bundle = getArguments();
-        int id = bundle.getInt("id",100035);
+        int id = bundle.getInt("id", 100035);
         this.id = String.valueOf(id);
-        mImagePath = bundle.getString("image", HttpConstant.PICASSO_IMAGE_URL);
+        mImagePath = bundle.getString("image");
         return layout;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         initView();
+
         setView();
     }
 
@@ -166,18 +178,19 @@ public class CriticChildFragment extends BaseFragment {
         mCriticAuthorTimes.setText("作者是：" + result.getAuthor() + "\t|\t阅读次数：" + result.getTimes());
         mCriticAuthor.setText(result.getAuthor());
         mCriticText1.setText(result.getText1());
-        mCriticText2.setText(result.getText2());
+        String text2 = result.getText2();
+        String[] split = text2.split("\\r\\n\\r\\n");
+        mCriticText2.setText("\r\n\r\n" + split[1]);
         mCriticText3.setText(result.getText3());
         mCriticText4.setText(result.getText4());
         mCriticText5.setText(result.getText5());
         mCriticRealtitle.setText(result.getRealtitle());
         mCriticAuthorbrief.setText(result.getAuthorbrief());
-        Picasso.with(getActivity()).load(mImagePath).placeholder(R.mipmap.start_bg).into(mImageCriticItem);
-        Picasso.with(getActivity()).load(result.getImage1()).placeholder(R.mipmap.start_bg).into(mCriticImage1);
-        Picasso.with(getActivity()).load(result.getImage2()).placeholder(R.mipmap.start_bg).into(mCriticImage2);
-        Picasso.with(getActivity()).load(result.getImage3()).placeholder(R.mipmap.start_bg).into(mCriticImage3);
-        Picasso.with(getActivity()).load(result.getImage4()).placeholder(R.mipmap.start_bg).into(mCriticImage4);
+        Picasso.with(getActivity()).load(HttpConstant.IMAGE_HEAD_URL + mImagePath).placeholder(R.drawable.loading).into(mImageCriticItem);
+        Picasso.with(getActivity()).load(HttpConstant.IMAGE_HEAD_URL + result.getImage1()).placeholder(R.drawable.loading).into(mCriticImage1);
+        Picasso.with(getActivity()).load(HttpConstant.IMAGE_HEAD_URL + result.getImage2()).placeholder(R.drawable.loading).into(mCriticImage2);
+        Picasso.with(getActivity()).load(HttpConstant.IMAGE_HEAD_URL + result.getImage3()).placeholder(R.drawable.loading).into(mCriticImage3);
+        Picasso.with(getActivity()).load(HttpConstant.IMAGE_HEAD_URL + result.getImage4()).placeholder(R.drawable.loading).into(mCriticImage4);
     }
-
 
 }
