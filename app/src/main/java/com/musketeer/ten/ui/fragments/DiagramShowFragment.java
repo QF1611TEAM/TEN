@@ -12,7 +12,7 @@ import com.musketeer.ten.R;
 /**
  * Created by Hey on 2016/9/21.
  */
-public class DiagramShowFragmentFive extends Fragment {
+public class DiagramShowFragment extends Fragment {
     private View layout;
 
     @Nullable

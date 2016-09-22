@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Kevin on 2016/9/21.
  */
-@HttpResponse(parser = HttpParser.class)
+
 public class CriticBean {
 
 
@@ -58,6 +58,7 @@ public class CriticBean {
         this.result = result;
     }
 
+    @HttpResponse(parser = HttpParser.class)
     public static class ResultBean {
         private int id;
         private int type;

@@ -2,17 +2,23 @@ package com.musketeer.ten.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
+import com.musketeer.ten.Beans.CriticBean;
+import com.musketeer.ten.Beans.DiagramBean;
 import com.musketeer.ten.R;
 import com.musketeer.ten.adapters.DiagramAdapter;
+import com.musketeer.ten.constants.HttpConstant;
+
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +33,12 @@ public class DiagramFragment extends BaseFragment implements View.OnClickListene
     public static final String TAG = DiagramFragment.class.getSimpleName();
     private ViewPager mViewPager;
     private ImageView mFloatBall;
+    private DiagramShowFragment diagramShowFragment;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        layout = inflater.inflate(R.layout.diagramfragment,container,false);
+        layout = inflater.inflate(R.layout.diagramfragment, container, false);
         return layout;
     }
 
@@ -39,25 +46,56 @@ public class DiagramFragment extends BaseFragment implements View.OnClickListene
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initView();
+        setUpView();
+    }
+    List<Integer> ids = new ArrayList<>();
+    private void setUpView() {
+
+        RequestParams requestParams = new RequestParams(HttpConstant.DIAGRAM_URL);
+        x.http().get(requestParams, new Callback.CommonCallback<DiagramBean>() {
+
+
+            @Override
+            public void onSuccess(DiagramBean result) {
+                int id = result.getResult().get(0).getId();
+                ids.add(id);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+        Log.e(TAG, "setUpView: " + ids );
     }
 
     private void initView() {
         mFloatBall = ((ImageView) layout.findViewById(R.id.float_ball));
         mFloatBall.setOnClickListener(this);
         mViewPager = ((ViewPager) layout.findViewById(R.id.diagram_view_pager));
+        createFragment();
 
+    }
+
+    private void createFragment() {
         List<Fragment> data = new ArrayList<>();
-        data.add(new DiagramShowFragmentOne());
-        data.add(new DiagramShowFragmentTwo());
-        data.add(new DiagramShowFragmentThree());
-        data.add(new DiagramShowFragmentFour());
-        data.add(new DiagramShowFragmentFive());
-        data.add(new DiagramShowFragmentSix());
-        data.add(new DiagramShowFragmentSeven());
-        data.add(new DiagramShowFragmentEight());
-        data.add(new DiagramShowFragmentNine());
+        for (int i = 0; i < 10; i++) {
+            diagramShowFragment = new DiagramShowFragment();
+            data.add(diagramShowFragment);
+        }
         DiagramAdapter adapter = new DiagramAdapter(getChildFragmentManager(), data);
         mViewPager.setAdapter(adapter);
+
     }
 
 
@@ -65,6 +103,8 @@ public class DiagramFragment extends BaseFragment implements View.OnClickListene
     public void onClick(View v) {
         showShare();
     }
+
+    //    -------------------分享------------------
     private void showShare() {
         ShareSDK.initSDK(getActivity());
         OnekeyShare oks = new OnekeyShare();
