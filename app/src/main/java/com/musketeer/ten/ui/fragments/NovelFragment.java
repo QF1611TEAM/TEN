@@ -23,6 +23,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
+
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,7 +119,9 @@ public class NovelFragment extends BaseFragment implements ViewPager.OnPageChang
     public void onPageSelected(int position) {
         Log.e(TAG, "onPageSelected: "+position);
         Toast.makeText(getActivity(),"当前页面:"+position,Toast.LENGTH_SHORT).show();
-        Log.e(TAG, "onPageSelected: "+Results.get(position).getPublishtime());
+        long publishtime = Results.get(position).getPublishtime();
+        Log.e(TAG, "onPageSelected: "+ publishtime);
+        Log.e(TAG, "onPageSelected: "+ getLongPointDate(publishtime));
     }
    /**
     * 在滑动状态改变的时候
@@ -127,5 +132,10 @@ public class NovelFragment extends BaseFragment implements ViewPager.OnPageChang
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+    public static String getLongPointDate(long lo){
+        Date date = new Date(lo);
+        SimpleDateFormat sd = new SimpleDateFormat("dd");
+        return sd.format(date);
     }
 }

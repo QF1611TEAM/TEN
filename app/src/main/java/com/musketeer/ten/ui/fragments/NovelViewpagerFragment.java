@@ -43,8 +43,7 @@ public class NovelViewpagerFragment extends BaseFragment {
         ButterKnife.bind(this, layout);
         Bundle arguments = getArguments();
         int id = arguments.getInt("id",1);
-        mNovelTitle.setText(id+"");
-//        setUpView(id);
+        setUpView(id);
         return layout;
     }
 
@@ -89,5 +88,6 @@ public class NovelViewpagerFragment extends BaseFragment {
         mNovelAuthor.setText(novelBean.getAuthor());
         mNovelAuthorbrief.setText(novelBean.getAuthorbrief());
     }
+
 
 }

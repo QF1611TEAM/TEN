@@ -78,5 +78,9 @@
             android:layout_marginTop="10dp"
             android:text="清池蛙\r\n这里有世界上最温柔的故事"
             android:textSize="18sp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"/>
     </LinearLayout>
 </ScrollView>
