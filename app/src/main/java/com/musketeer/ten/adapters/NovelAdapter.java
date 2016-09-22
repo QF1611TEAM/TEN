@@ -2,9 +2,8 @@ package com.musketeer.ten.adapters;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-
 import com.musketeer.ten.ui.fragments.NovelViewpagerFragment;
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,9 +14,16 @@ public class NovelAdapter extends FragmentPagerAdapter{
 
     public NovelAdapter(FragmentManager fm, List<NovelViewpagerFragment> data) {
         super(fm);
-        this.data = data;
+        if (data==null){
+            this.data=new ArrayList<>();
+        }else {
+            this.data = data;
+        }
     }
-
+    public void upData(List<NovelViewpagerFragment> updata){
+        data.addAll(updata);
+        this.notifyDataSetChanged();
+    }
     @Override
     public NovelViewpagerFragment getItem(int position) {
         return data.get(position);

@@ -9,13 +9,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.musketeer.ten.Beans.CriticBean;
 import com.musketeer.ten.Beans.CriticBeanBody;
 import com.musketeer.ten.R;
+import com.musketeer.ten.constants.HttpConstant;
 import com.musketeer.ten.http.CriticParams;
 import com.squareup.picasso.Picasso;
 
+import org.xutils.DbManager;
 import org.xutils.common.Callback;
+import org.xutils.ex.DbException;
 import org.xutils.x;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,13 +64,27 @@ public class CriticChildFragment extends BaseFragment {
     @BindView(R.id.critic_authorbrief)
     TextView mCriticAuthorbrief;
     //
-    private int id = 100035;
+    private String id;
+    //
+    DbManager.DaoConfig mCriticConfig = new DbManager.DaoConfig()
+            .setDbName("CirticDataBase");
+    //
+    DbManager.DaoConfig mCriticBeanBodyConfig = new DbManager.DaoConfig()
+            .setDbName("CirticDataBase");
+    private String mImagePath;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         layout = inflater.inflate(R.layout.fragmnet_cirticchild, container, false);
+
         ButterKnife.bind(this, layout);
+
+        Bundle bundle = getArguments();
+        int id = bundle.getInt("id",100035);
+        this.id = String.valueOf(id);
+        mImagePath = bundle.getString("image", HttpConstant.PICASSO_IMAGE_URL);
         return layout;
     }
 
@@ -87,6 +107,22 @@ public class CriticChildFragment extends BaseFragment {
      */
     private void setView() {
         getDataFromHttp();
+    }
+
+    /**
+     * 数据库获取数据
+     */
+    private void getDataFromDataSpace() {
+
+        DbManager dbManager = x.getDb(mCriticConfig);
+        try {
+
+            List<CriticBean> criticBeens = dbManager.selector(CriticBean.class).findAll();
+
+
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -116,7 +152,6 @@ public class CriticChildFragment extends BaseFragment {
 
             @Override
             public void onFinished() {
-
             }
         });
     }
@@ -128,14 +163,20 @@ public class CriticChildFragment extends BaseFragment {
      */
     private void refreshUI(CriticBeanBody result) {
         mTitleCritic.setText(result.getTitle());
-        mCriticAuthor.setText("作者是：" + result.getAuthor() + "\t|\t阅读次数：" + result.getTimes());
+        mCriticAuthorTimes.setText("作者是：" + result.getAuthor() + "\t|\t阅读次数：" + result.getTimes());
+        mCriticAuthor.setText(result.getAuthor());
         mCriticText1.setText(result.getText1());
         mCriticText2.setText(result.getText2());
         mCriticText3.setText(result.getText3());
         mCriticText4.setText(result.getText4());
+        mCriticText5.setText(result.getText5());
         mCriticRealtitle.setText(result.getRealtitle());
         mCriticAuthorbrief.setText(result.getAuthorbrief());
-        Picasso.with(getActivity()).load(result.getImage1()).into(mCriticImage1);
+        Picasso.with(getActivity()).load(mImagePath).placeholder(R.mipmap.start_bg).into(mImageCriticItem);
+        Picasso.with(getActivity()).load(result.getImage1()).placeholder(R.mipmap.start_bg).into(mCriticImage1);
+        Picasso.with(getActivity()).load(result.getImage2()).placeholder(R.mipmap.start_bg).into(mCriticImage2);
+        Picasso.with(getActivity()).load(result.getImage3()).placeholder(R.mipmap.start_bg).into(mCriticImage3);
+        Picasso.with(getActivity()).load(result.getImage4()).placeholder(R.mipmap.start_bg).into(mCriticImage4);
     }
 
 

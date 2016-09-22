@@ -1,11 +1,19 @@
 package com.musketeer.ten.Beans;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.musketeer.ten.http.BeansNormalParser;
+
+import org.xutils.http.annotation.HttpResponse;
+
 import java.util.List;
 
 /**
  * Created by Kevin on 2016/9/21.
  */
-public class NovelBeanList {
+@HttpResponse(parser = BeansNormalParser.class)
+public class NovelBeanList implements Parcelable{
 
     /**
      * id : 100038
@@ -20,6 +28,32 @@ public class NovelBeanList {
 
     private List<ResultBean> result;
 
+    protected NovelBeanList(Parcel in) {
+        result = in.createTypedArrayList(ResultBean.CREATOR);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeTypedList(result);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<NovelBeanList> CREATOR = new Creator<NovelBeanList>() {
+        @Override
+        public NovelBeanList createFromParcel(Parcel in) {
+            return new NovelBeanList(in);
+        }
+
+        @Override
+        public NovelBeanList[] newArray(int size) {
+            return new NovelBeanList[size];
+        }
+    };
+
     public List<ResultBean> getResult() {
         return result;
     }
@@ -28,11 +62,33 @@ public class NovelBeanList {
         this.result = result;
     }
 
-    public static class ResultBean {
+
+
+
+    public static class ResultBean implements Parcelable{
         private int id;
         private int type;
         private long publishtime;
         private String image;
+
+        protected ResultBean(Parcel in) {
+            id = in.readInt();
+            type = in.readInt();
+            publishtime = in.readLong();
+            image = in.readString();
+        }
+
+        public static final Creator<ResultBean> CREATOR = new Creator<ResultBean>() {
+            @Override
+            public ResultBean createFromParcel(Parcel in) {
+                return new ResultBean(in);
+            }
+
+            @Override
+            public ResultBean[] newArray(int size) {
+                return new ResultBean[size];
+            }
+        };
 
         public int getId() {
             return id;
@@ -64,6 +120,19 @@ public class NovelBeanList {
 
         public void setImage(String image) {
             this.image = image;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(id);
+            dest.writeInt(type);
+            dest.writeLong(publishtime);
+            dest.writeString(image);
         }
     }
 }

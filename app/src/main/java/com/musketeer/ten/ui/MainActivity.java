@@ -1,24 +1,36 @@
 package com.musketeer.ten.ui;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
+import com.musketeer.ten.Beans.NovelBeanList;
 import com.musketeer.ten.R;
+import com.musketeer.ten.constants.HttpConstant;
 import com.musketeer.ten.ui.fragments.BaseFragment;
 import com.musketeer.ten.ui.fragments.CriticFragment;
 import com.musketeer.ten.ui.fragments.DiagramFragment;
 import com.musketeer.ten.ui.fragments.MineFragment;
 import com.musketeer.ten.ui.fragments.NovelFragment;
 
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +38,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     @BindView(R.id.fragment_container)
     FrameLayout mFragmentContainer;
     @BindView(R.id.btn_critic)
@@ -50,7 +63,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         ButterKnife.bind(this);
 
         initView();
-
         initListener();
     }
 
@@ -81,9 +93,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         switch (checkedId) {
 
             case R.id.btn_critic:
-
                 switchPages(CriticFragment.TAG, CriticFragment.class);
-
                 break;
 
             case R.id.btn_novel:
@@ -118,7 +128,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
          * 将当前显示的碎片进行隐藏，之后将要显示的页面显示出来
          */
         FragmentManager fragmentManager = getSupportFragmentManager();
-
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         //隐藏显示页面
@@ -151,8 +160,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         }
 
         transaction.commit();
-
     }
-
 
 }

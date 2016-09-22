@@ -12,6 +12,6 @@ import org.xutils.http.annotation.HttpRequest;
 @HttpRequest(host = "http://api.shigeten.net",path = "api/Critic/GetCriticContent")
 public class CriticParams extends RequestParams {
 
-    public int id;
+    public String id;
 
 }
