@@ -28,6 +28,8 @@ import butterknife.ButterKnife;
 public class DiagramShowFragment extends Fragment {
     private static final String TAG = DiagramShowFragment.class.getSimpleName();
     private View layout;
+
+    //通过ButterKnife导入控件
     @BindView(R.id.diagram_author)
     TextView mAuthor;
     @BindView(R.id.diagram_image)
@@ -44,6 +46,7 @@ public class DiagramShowFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         layout = inflater.inflate(R.layout.item_diagram, container, false);
+        //ButterKnife导入（ui）注解
         ButterKnife.bind(this, layout);
         return layout;
     }
@@ -61,7 +64,7 @@ public class DiagramShowFragment extends Fragment {
                 .setFailureDrawableId(R.mipmap.ic_launcher)
                 .build();
     }
-
+    //网络加载数据（id为主Fragment传入的）
     private void setUpView(int id) {
 
         DiagramParams diagramParams = new DiagramParams();
@@ -72,6 +75,8 @@ public class DiagramShowFragment extends Fragment {
             public void onSuccess(DiagramBeanShow result) {
 //                Log.e(TAG, "onSuccess: "+"111111111111111111" );
 //                Log.e(TAG, "onSuccess: "+result.getId()+result.getTitle()+result.getAuthor() );
+
+                //更新UI
                 mTitle.setText(result.getTitle());
                 x.image().bind(mImage, "http://api.shigeten.net/" + result.getImage1(), options);
                 mAuthor.setText(result.getAuthorbrief());
