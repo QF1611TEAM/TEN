@@ -42,5 +42,11 @@
             style="@style/main_btn"
             android:drawableTop="@drawable/btn_mine_selector"/>
     </RadioGroup>
+    <ImageView
+        android:id="@+id/main_loading"
+        android:src="@drawable/loading"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"/>
 
 </FrameLayout>

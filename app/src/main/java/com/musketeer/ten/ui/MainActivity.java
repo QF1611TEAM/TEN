@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
@@ -22,6 +23,8 @@ import com.musketeer.ten.ui.fragments.CriticFragment;
 import com.musketeer.ten.ui.fragments.DiagramFragment;
 import com.musketeer.ten.ui.fragments.MineFragment;
 import com.musketeer.ten.ui.fragments.NovelFragment;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.view.ViewHelper;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -51,8 +54,16 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     RadioButton mBtnMine;
     @BindView(R.id.main_btn_container)
     RadioGroup mMainBtnContainer;
+
+    //记录开始的Y位置
+    private float myStartY;
+
+    //记录最后的Y位置
+    private float myLastY;
+
     //
     private Fragment mShowFragment;
+    private float threshold = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +74,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         ButterKnife.bind(this);
 
         initView();
+
         initListener();
     }
 
@@ -160,6 +172,50 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         }
 
         transaction.commit();
+    }
+
+    //-------------------------------------------------
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        float y = event.getY();
+        Log.e(TAG, "onTouchEvent: y" + y);
+        switch (event.getAction()) {
+
+            case MotionEvent.ACTION_DOWN:
+
+                myStartY = y;
+                myLastY = y;
+                Log.e(TAG, "onTouch: y:" + y);
+                break;
+
+            case MotionEvent.ACTION_UP:
+
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                Log.e(TAG, "onTouch: 触摸事件");
+                float yDelta = y - myLastY;
+                if (Math.abs(yDelta) > threshold && y < myLastY) {
+
+                    ObjectAnimator.ofFloat(mMainBtnContainer, "alpha", 0).setDuration(600).start();
+//                    ViewHelper.setAlpha(mMainBtnContainer, 0);
+//                    mMainBtnContainer.setVisibility(View.INVISIBLE);
+                } else {
+
+                    ObjectAnimator.ofFloat(mMainBtnContainer, "alpha", 1).setDuration(600).start();
+//                    ViewHelper.setAlpha(mMainBtnContainer, 1);
+//                    mMainBtnContainer.setVisibility(View.VISIBLE);
+                }
+                break;
+        }
+        return super.dispatchTouchEvent(event);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        return super.onTouchEvent(event);
     }
 
 }
