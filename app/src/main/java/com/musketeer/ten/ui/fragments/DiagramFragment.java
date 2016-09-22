@@ -60,10 +60,11 @@ public class DiagramFragment extends BaseFragment implements View.OnClickListene
 
             @Override
             public void onSuccess(DiagramBean result) {
-//                int id = result.getResult().get(0).getId();
                 mResult = result.getResult();
+                //遍历生成显示内容的Fragment
                 for (int i = 0; i < mResult.size(); i++) {
                     diagramShowFragment = new DiagramShowFragment();
+                    //将id传入显示内容的Fragment
                     Bundle bundle = new Bundle();
                     bundle.putInt("id",mResult.get(i).getId());
                     diagramShowFragment.setArguments(bundle);
@@ -91,6 +92,7 @@ public class DiagramFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void initView() {
+        //分享按钮
         mFloatBall = ((ImageView) layout.findViewById(R.id.float_ball));
         mFloatBall.setOnClickListener(this);
         mViewPager = ((ViewPager) layout.findViewById(R.id.diagram_view_pager));
@@ -100,10 +102,6 @@ public class DiagramFragment extends BaseFragment implements View.OnClickListene
 
     private void createFragment() {
         data = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            diagramShowFragment = new DiagramShowFragment();
-//            data.add(diagramShowFragment);
-//        }
         adapter = new DiagramAdapter(getChildFragmentManager(), null);
         mViewPager.setAdapter(adapter);
     }
