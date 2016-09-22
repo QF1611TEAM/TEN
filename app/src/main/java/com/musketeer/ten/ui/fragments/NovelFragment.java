@@ -114,7 +114,7 @@ public class NovelFragment extends BaseFragment implements ViewPager.OnPageChang
     public void onPageSelected(int position) {
         Log.e(TAG, "onPageSelected: "+position);
         Toast.makeText(getActivity(),"当前页面:"+position,Toast.LENGTH_SHORT).show();
-        long publishtime = Results.get(position).getPublishtime();
+        long publishtime = Results.get(position).getPublishtime()/10000;
         Log.e(TAG, "onPageSelected: "+ publishtime);
         Log.e(TAG, "onPageSelected: "+ getLongPointDate(publishtime));
     }
@@ -131,7 +131,7 @@ public class NovelFragment extends BaseFragment implements ViewPager.OnPageChang
 
     public static String getLongPointDate(long lo){
         Date date = new Date(lo);
-        SimpleDateFormat sd = new SimpleDateFormat("dd");
+        SimpleDateFormat sd = new SimpleDateFormat("yyyy.MM.dd");
         return sd.format(date);
 
     }
