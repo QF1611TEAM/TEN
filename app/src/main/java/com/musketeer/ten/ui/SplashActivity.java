@@ -72,9 +72,4 @@ public class SplashActivity extends BaseActivity implements Handler.Callback {
         return false;
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-
-        return false;
-    }
 }
