@@ -1,45 +1,38 @@
 package com.musketeer.ten.ui;
 
+import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.musketeer.ten.Beans.NovelBeanList;
 import com.musketeer.ten.R;
-import com.musketeer.ten.constants.HttpConstant;
-import com.musketeer.ten.ui.fragments.BaseFragment;
 import com.musketeer.ten.ui.fragments.CriticFragment;
 import com.musketeer.ten.ui.fragments.DiagramFragment;
 import com.musketeer.ten.ui.fragments.MineFragment;
 import com.musketeer.ten.ui.fragments.NovelFragment;
 import com.nineoldandroids.animation.ObjectAnimator;
-import com.nineoldandroids.view.ViewHelper;
-
-import org.xutils.common.Callback;
-import org.xutils.http.RequestParams;
-import org.xutils.x;
 
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
+public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     @BindView(R.id.fragment_container)
@@ -54,16 +47,20 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     RadioButton mBtnMine;
     @BindView(R.id.main_btn_container)
     RadioGroup mMainBtnContainer;
+    @BindView(R.id.main_image_favorite)
+    ImageView mFavoriteBtn;
 
     //记录开始的Y位置
     private float myStartY;
 
     //记录最后的Y位置
     private float myLastY;
-
     //
     private Fragment mShowFragment;
-    private float threshold = 100;
+    // 极限值
+    private float threshold = 300;
+
+    private PopupWindow mPopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +86,9 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         transaction.add(R.id.fragment_container, mShowFragment, CriticFragment.TAG);
 
         transaction.commit();
+
+
+
     }
 
     /**
@@ -96,6 +96,8 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
      */
     private void initListener() {
         mMainBtnContainer.setOnCheckedChangeListener(this);
+
+        mFavoriteBtn.setOnClickListener(this);
     }
 
 
@@ -174,48 +176,100 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         transaction.commit();
     }
 
-    //-------------------------------------------------
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
+
         float y = event.getY();
+
         Log.e(TAG, "onTouchEvent: y" + y);
+
         switch (event.getAction()) {
 
             case MotionEvent.ACTION_DOWN:
 
                 myStartY = y;
-                myLastY = y;
-                Log.e(TAG, "onTouch: y:" + y);
-                break;
 
-            case MotionEvent.ACTION_UP:
+                myLastY = y;
+
+                Log.e(TAG, "onTouch: y:" + y);
 
                 break;
 
             case MotionEvent.ACTION_MOVE:
+
                 Log.e(TAG, "onTouch: 触摸事件");
+
                 float yDelta = y - myLastY;
+
                 if (Math.abs(yDelta) > threshold && y < myLastY) {
-
+                    //设置控制条隐藏
                     ObjectAnimator.ofFloat(mMainBtnContainer, "alpha", 0).setDuration(600).start();
-//                    ViewHelper.setAlpha(mMainBtnContainer, 0);
-//                    mMainBtnContainer.setVisibility(View.INVISIBLE);
-                } else {
-
+                    ObjectAnimator.ofFloat(mFavoriteBtn, "alpha", 0).setDuration(600).start();
+                } else if (Math.abs(yDelta) > threshold && y > myLastY) {
+                    //控制控制条显示
                     ObjectAnimator.ofFloat(mMainBtnContainer, "alpha", 1).setDuration(600).start();
-//                    ViewHelper.setAlpha(mMainBtnContainer, 1);
-//                    mMainBtnContainer.setVisibility(View.VISIBLE);
+                    ObjectAnimator.ofFloat(mFavoriteBtn, "alpha", 1).setDuration(600).start();
                 }
                 break;
         }
+
         return super.dispatchTouchEvent(event);
     }
 
+    //--------------------mFavoriteBtn点击监听---------------------
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public void onClick(View v) {
 
-        return super.onTouchEvent(event);
+        showPopupWindow(v);
+
     }
 
+    /**
+     * popupwindow 弹出框
+     * @param view
+     */
+    private void showPopupWindow(View view) {
+
+        // 一个自定义的布局，作为显示的内容
+        View contentView = LayoutInflater.from(this).inflate(
+                R.layout.popup_process, null);
+        // 设置按钮的点击事件
+        Button button = (Button) contentView.findViewById(R.id.button1);
+        button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "button is pressed",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        final PopupWindow popupWindow = new PopupWindow(contentView,
+                FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, true);
+
+        popupWindow.setTouchable(true);
+
+        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                Log.i("mengdd", "onTouch : ");
+
+                return false;
+                // 这里如果返回true的话，touch事件将被拦截
+                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
+            }
+        });
+
+        // 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
+        // 我觉得这里是API的一个bug
+//        popupWindow.setBackgroundDrawable(getResources().getDrawable(
+//                R.drawable.selectmenu_bg_downward));
+
+        // 设置好参数之后再show
+        popupWindow.showAsDropDown(view);
+
+    }
 }

@@ -4,23 +4,20 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.musketeer.ten.Beans.CriticBean;
 import com.musketeer.ten.R;
 import com.musketeer.ten.adapters.CriticAdapter;
 import com.musketeer.ten.constants.HttpConstant;
-import com.musketeer.ten.events.CriticEvent;
-import com.musketeer.ten.http.CriticParams;
+import com.musketeer.ten.utils.NetWorkUtils;
 
-import org.greenrobot.eventbus.EventBus;
 import org.xutils.DbManager;
 import org.xutils.common.Callback;
 import org.xutils.ex.DbException;
@@ -42,6 +39,9 @@ public class CriticFragment extends BaseFragment implements Handler.Callback {
 
     @BindView(R.id.critic_viewpager)
     ViewPager mViewpager;
+
+    @BindView(R.id.critic_loading_image)
+    ImageView mLoadingImage;
     //
     private CriticAdapter mAdapter;
     //
@@ -70,8 +70,6 @@ public class CriticFragment extends BaseFragment implements Handler.Callback {
         setView();
     }
 
-
-
     /**
      * 初始化控件
      */
@@ -87,7 +85,48 @@ public class CriticFragment extends BaseFragment implements Handler.Callback {
      */
     private void setView() {
 
-        getDataFromHttp();
+        if (NetWorkUtils.isConnected(getActivity())) {
+            //有网络，从网络中获取数据，开始loading动画
+            getDataFromHttp();
+
+            mLoadingImage.setVisibility(View.VISIBLE);
+        } else {
+            //没有网络，友情提示，获取数据库中的数据
+            Toast.makeText(getActivity(), "当前网络状态不稳定，无法刷新", Toast.LENGTH_SHORT).show();
+
+            getDataFromDataBase();
+        }
+
+    }
+
+    /**
+     * 获取数据库中的数据
+     */
+    private void getDataFromDataBase() {
+
+        DbManager dbManager = x.getDb(mConfig);
+
+        try {
+
+            List<CriticBean> criticBeanList = dbManager.selector(CriticBean.class).findAll();
+
+            if (criticBeanList != null) {
+
+                Log.e(TAG, "getDataFromDataBase: "+criticBeanList.toString() );
+
+                List<CriticChildFragment> childFragment = getChildFragment(criticBeanList.get(0).getResult());
+
+                mAdapter.upDataRes(childFragment);
+
+            }else {
+                // TODO 弹出提示 点击刷新
+                Toast.makeText(getActivity(), "本地获取数据失败", Toast.LENGTH_SHORT).show();
+
+            }
+
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -108,37 +147,38 @@ public class CriticFragment extends BaseFragment implements Handler.Callback {
 
                 if (result != null) {
 
-                    List<CriticChildFragment> data = setChildFragment(result.getResult());
+                    List<CriticChildFragment> data = getChildFragment(result.getResult());
 
                     mAdapter.upDataRes(data);
-                }
 
-//                if (result!=null) {
-//
-//                    //数据库存储
-//                    DbManager dbManager = x.getDb(mConfig);
-//
-//                    List<CriticBean.ResultBean> resultBeen = result.getResult();
-//
-//                    for (int i = 0; i < resultBeen.size(); i++) {
-//
-//                        try {
-//
-//                            dbManager.saveOrUpdate(resultBeen.get(i));
-//
-//                        } catch (DbException e) {
-//
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//                }
+                    //数据库存储
+                    DbManager dbManager = x.getDb(mConfig);
+
+                    List<CriticBean.ResultBean> resultBeen = result.getResult();
+
+                    for (int i = 0; i < resultBeen.size(); i++) {
+
+                        try {
+
+                            dbManager.saveOrUpdate(resultBeen.get(i));
+
+                        } catch (DbException e) {
+
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
 
                 Log.e(TAG, "onError: " + ex.getMessage());
+
+                Toast.makeText(getActivity(), "获取网络数据失败", Toast.LENGTH_SHORT).show();
+
+                // TODO 点击刷新
 
             }
 
@@ -149,7 +189,10 @@ public class CriticFragment extends BaseFragment implements Handler.Callback {
 
             @Override
             public void onFinished() {
+
                 Log.e(TAG, "onFinished: ");
+                //加载完成，设置加载动画隐藏
+                mLoadingImage.setVisibility(View.GONE);
             }
         });
     }
@@ -157,7 +200,7 @@ public class CriticFragment extends BaseFragment implements Handler.Callback {
     /**
      * 添加子Fragment
      */
-    private List<CriticChildFragment> setChildFragment(List<CriticBean.ResultBean> result) {
+    private List<CriticChildFragment> getChildFragment(List<CriticBean.ResultBean> result) {
 
         List<CriticChildFragment> data = new ArrayList<>();
 
@@ -169,7 +212,7 @@ public class CriticFragment extends BaseFragment implements Handler.Callback {
             int id = result.get(i).getId();
             String image = result.get(i).getImage();
             bundle.putInt("id", id);
-            bundle.putString("image",image);
+            bundle.putString("image", image);
             fragment.setArguments(bundle);
 
             data.add(fragment);
