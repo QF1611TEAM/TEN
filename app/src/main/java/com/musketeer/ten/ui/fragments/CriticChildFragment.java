@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.musketeer.ten.Beans.CriticBean;
 import com.musketeer.ten.Beans.CriticBeanBody;
@@ -20,6 +22,7 @@ import com.musketeer.ten.R;
 import com.musketeer.ten.constants.HttpConstant;
 import com.musketeer.ten.http.CriticParams;
 import com.musketeer.ten.ui.MainActivity;
+import com.musketeer.ten.utils.NetWorkUtils;
 import com.squareup.picasso.Picasso;
 
 import org.xutils.DbManager;
@@ -74,13 +77,10 @@ public class CriticChildFragment extends BaseFragment {
     @BindView(R.id.critic_scroll)
     ScrollView mCriticScroll;
     //
-    private String id;
-    //
-    DbManager.DaoConfig mCriticConfig = new DbManager.DaoConfig()
-            .setDbName("CirticDataBase");
+    private int id;
     //
     DbManager.DaoConfig mCriticBeanBodyConfig = new DbManager.DaoConfig()
-            .setDbName("CirticDataBase");
+            .setDbName("CirticDataBaseBody");
     private String mImagePath;
 
 
@@ -92,8 +92,7 @@ public class CriticChildFragment extends BaseFragment {
         ButterKnife.bind(this, layout);
 
         Bundle bundle = getArguments();
-        int id = bundle.getInt("id", 100035);
-        this.id = String.valueOf(id);
+        this.id = bundle.getInt("id", 100035);
         mImagePath = bundle.getString("image");
         return layout;
     }
@@ -118,20 +117,44 @@ public class CriticChildFragment extends BaseFragment {
      * 设置数据
      */
     private void setView() {
-        getDataFromHttp();
+
+        if (NetWorkUtils.isConnected(getActivity())) {
+            Log.e(TAG, "setView: 网络良好" );
+            //有网络，从网络中获取数据，开始loading动画
+            getDataFromHttp();
+
+//            mLoadingImage.setVisibility(View.VISIBLE);
+
+        } else {
+            Log.e(TAG, "setView: 没有网络");
+            //没有网络，友情提示，获取数据库中的数据
+            Snackbar.make(getView(),"",Snackbar.LENGTH_SHORT).show();
+
+            Toast.makeText(getActivity(), "当前网络状态不稳定，无法刷新", Toast.LENGTH_SHORT).show();
+
+            getDataFromDataBase();
+        }
     }
 
     /**
      * 数据库获取数据
      */
-    private void getDataFromDataSpace() {
+    private void getDataFromDataBase() {
 
-        DbManager dbManager = x.getDb(mCriticConfig);
+        DbManager dbManager = x.getDb(mCriticBeanBodyConfig);
         try {
 
-            List<CriticBean> criticBeens = dbManager.selector(CriticBean.class).findAll();
+            CriticBeanBody criticBeanBody = dbManager.selector(CriticBeanBody.class).where("id", "=", this.id).findFirst();
+            if (criticBeanBody != null) {
 
+                refreshUI(criticBeanBody);
 
+            } else {
+
+                Toast.makeText(getActivity(), "本地获取数据失败", Toast.LENGTH_SHORT).show();
+
+                // TODO 点击刷新
+            }
         } catch (DbException e) {
             e.printStackTrace();
         }
@@ -141,20 +164,44 @@ public class CriticChildFragment extends BaseFragment {
      * 网络获取数据
      */
     private void getDataFromHttp() {
+
+        final DbManager dbManager = x.getDb(mCriticBeanBodyConfig);
+
         CriticParams params = new CriticParams();
-        params.id = id;
+
+        params.id = String.valueOf(id);
+
         x.http().get(params, new Callback.CommonCallback<CriticBeanBody>() {
+
             @Override
             public void onSuccess(CriticBeanBody result) {
+
                 Log.e(TAG, "onSuccess: " + result);
+
                 if (result != null) {
+
                     refreshUI(result);
+
+                    try {
+
+                        dbManager.saveOrUpdate(result);
+
+                    } catch (DbException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+
+                    Toast.makeText(getActivity(), "获取网络数据失败", Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
+
                 Log.e(TAG, "onError: " + ex.getMessage());
+
             }
 
             @Override
@@ -164,6 +211,7 @@ public class CriticChildFragment extends BaseFragment {
 
             @Override
             public void onFinished() {
+
             }
         });
     }
@@ -175,7 +223,7 @@ public class CriticChildFragment extends BaseFragment {
      */
     private void refreshUI(CriticBeanBody result) {
         mTitleCritic.setText(result.getTitle());
-        mCriticAuthorTimes.setText("作者是：" + result.getAuthor() + "\t|\t阅读次数：" + result.getTimes());
+        mCriticAuthorTimes.setText("作者：" + result.getAuthor() + "\t\t|\t\t阅读量：" + result.getTimes());
         mCriticAuthor.setText(result.getAuthor());
         mCriticText1.setText(result.getText1());
         String text2 = result.getText2();
