@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -68,6 +69,12 @@ public class SplashActivity extends BaseActivity implements Handler.Callback {
                 mHandler.sendEmptyMessageDelayed(START_ANIM, 50);
                 break;
         }
+        return false;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
         return false;
     }
 }
