@@ -9,15 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <ImageView
-        android:id="@+id/float_ball"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="70dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/floating_btn"
-        android:src="@mipmap/icon_favorite_tip" />
+    <!--<ImageView-->
+        <!--android:id="@+id/float_ball"-->
+        <!--android:layout_width="50dp"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_gravity="bottom|end"-->
+        <!--android:layout_marginBottom="70dp"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:background="@drawable/floating_btn"-->
+        <!--android:src="@mipmap/icon_favorite_tip" />-->
 
     <LinearLayout
         android:id="@+id/title"

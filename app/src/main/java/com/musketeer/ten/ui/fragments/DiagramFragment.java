@@ -93,8 +93,8 @@ public class DiagramFragment extends BaseFragment implements View.OnClickListene
 
     private void initView() {
         //分享按钮
-        mFloatBall = ((ImageView) layout.findViewById(R.id.float_ball));
-        mFloatBall.setOnClickListener(this);
+//        mFloatBall = ((ImageView) layout.findViewById(R.id.float_ball));
+//        mFloatBall.setOnClickListener(this);
         mViewPager = ((ViewPager) layout.findViewById(R.id.diagram_view_pager));
         createFragment();
 

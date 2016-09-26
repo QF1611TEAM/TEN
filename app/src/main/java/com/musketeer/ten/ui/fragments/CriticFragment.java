@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.musketeer.ten.Beans.CriticBean;
+import com.musketeer.ten.Beans.NovelBeanList;
 import com.musketeer.ten.R;
 import com.musketeer.ten.adapters.CriticAdapter;
 import com.musketeer.ten.constants.HttpConstant;
@@ -24,7 +25,11 @@ import org.xutils.ex.DbException;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,8 +39,27 @@ import butterknife.ButterKnife;
 /**
  * Created by Kevin on 2016/9/20.
  */
-public class CriticFragment extends BaseFragment implements Handler.Callback {
+public class CriticFragment extends BaseFragment implements Handler.Callback, ViewPager.OnPageChangeListener {
     public static final String TAG = CriticFragment.class.getSimpleName();
+    @BindView(R.id.critle_data_shi)
+    ImageView mCritleDataShi;
+    @BindView(R.id.critle_data_ge)
+    ImageView mCritleDataGe;
+    @BindView(R.id.critle_week)
+    ImageView mCritleWeek;
+    @BindView(R.id.critle_month)
+    ImageView mCritleMonth;
+
+    private List<CriticBean.ResultBean> Results;
+
+    private int[] weeks = {R.mipmap.week_7, R.mipmap.week_1, R.mipmap.week_2, R.mipmap.week_3,
+            R.mipmap.week_4, R.mipmap.week_5, R.mipmap.week_6,};
+    private int[] months = {R.mipmap.month_1, R.mipmap.month_2, R.mipmap.month_3, R.mipmap.month_4,
+            R.mipmap.month_5, R.mipmap.month_6, R.mipmap.month_7, R.mipmap.month_8, R.mipmap.month_9,
+            R.mipmap.month_10, R.mipmap.month_11, R.mipmap.month_12};
+    private int[] datas = {R.mipmap.date_0, R.mipmap.date_1, R.mipmap.date_2, R.mipmap.date_3,
+            R.mipmap.date_4, R.mipmap.date_5, R.mipmap.date_6, R.mipmap.date_7, R.mipmap.date_8,
+            R.mipmap.date_9};
 
     @BindView(R.id.critic_viewpager)
     ViewPager mViewpager;
@@ -75,6 +99,8 @@ public class CriticFragment extends BaseFragment implements Handler.Callback {
      */
     private void initView() {
 
+        mViewpager.setOnPageChangeListener(this);
+
         mAdapter = new CriticAdapter(getFragmentManager(), null);
 
         mViewpager.setAdapter(mAdapter);
@@ -112,13 +138,13 @@ public class CriticFragment extends BaseFragment implements Handler.Callback {
 
             if (criticBeanList != null) {
 
-                Log.e(TAG, "getDataFromDataBase: "+criticBeanList.toString() );
+                Log.e(TAG, "getDataFromDataBase: " + criticBeanList.toString());
 
                 List<CriticChildFragment> childFragment = getChildFragment(criticBeanList.get(0).getResult());
 
                 mAdapter.upDataRes(childFragment);
 
-            }else {
+            } else {
                 // TODO 弹出提示 点击刷新
                 Toast.makeText(getActivity(), "本地获取数据失败", Toast.LENGTH_SHORT).show();
 
@@ -151,16 +177,22 @@ public class CriticFragment extends BaseFragment implements Handler.Callback {
 
                     mAdapter.upDataRes(data);
 
+                    Results = result.getResult();
+
+                    long publishtime = Results.get(0).getPublishtime()/10000;
+                    String date = getLongPointDate(publishtime);
+                    String[] split = date.split("-");
+                    upDataUI(split);
+
                     //数据库存储
                     DbManager dbManager = x.getDb(mConfig);
 
-                    List<CriticBean.ResultBean> resultBeen = result.getResult();
 
-                    for (int i = 0; i < resultBeen.size(); i++) {
+                    for (int i = 0; i < Results.size(); i++) {
 
                         try {
 
-                            dbManager.saveOrUpdate(resultBeen.get(i));
+                            dbManager.saveOrUpdate(Results.get(i));
 
                         } catch (DbException e) {
 
@@ -197,6 +229,12 @@ public class CriticFragment extends BaseFragment implements Handler.Callback {
         });
     }
 
+    public static String getLongPointDate(long lo){
+        Date date = new Date(lo);
+        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+        return sd.format(date);
+    }
+
     /**
      * 添加子Fragment
      */
@@ -230,5 +268,57 @@ public class CriticFragment extends BaseFragment implements Handler.Callback {
         return false;
     }
 
+    private void upDataUI(String[] split) {
+        int year = Integer.parseInt(split[0]) - 1970;
+        int yue = Integer.parseInt(split[1]);
+        int ri = Integer.parseInt(split[2]);
+        for (int i = 1; i < 13; i++) {
+            if (i == yue) {
+                mCritleMonth .setImageResource(months[i - 1]);
+                break;
+            }
+        }
+        int ri_ge = ri % 10;
+        int ri_shi = ri / 10;
+        for (int i = 0; i < 10; i++) {
+            if (i == ri_ge) {
+                mCritleDataGe.setImageResource(datas[i]);
+            }
+            if (i == ri_shi) {
+                mCritleDataShi.setImageResource(datas[i]);
+            }
+        }
+        Calendar instance = GregorianCalendar.getInstance();
+        instance.set(year, yue, ri);
+        long timeInMillis = instance.getTimeInMillis();
+        int week = getWeek(timeInMillis);
+        mCritleWeek.setImageResource(weeks[week - 1]);
+    }
 
+    private static int getWeek(long timeStamp) {
+        int mydate = 0;
+        String week = null;
+        Calendar cd = Calendar.getInstance();
+        cd.setTime(new Date(timeStamp));
+        mydate = cd.get(Calendar.DAY_OF_WEEK);
+        return mydate;
+    }
+    //---------------------------Viewpager切换监听---------------------------------------------
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        long publishtime = Results.get(position).getPublishtime()/10000;
+        String date = getLongPointDate(publishtime);
+        String[] split = date.split("-");
+        upDataUI(split);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
 }
