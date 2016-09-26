@@ -4,24 +4,19 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.musketeer.ten.Beans.CriticBean;
 import com.musketeer.ten.Beans.CriticBeanBody;
 import com.musketeer.ten.R;
 import com.musketeer.ten.constants.HttpConstant;
 import com.musketeer.ten.http.CriticParams;
-import com.musketeer.ten.ui.MainActivity;
 import com.musketeer.ten.utils.NetWorkUtils;
 import com.squareup.picasso.Picasso;
 
@@ -29,9 +24,6 @@ import org.xutils.DbManager;
 import org.xutils.common.Callback;
 import org.xutils.ex.DbException;
 import org.xutils.x;
-
-import java.lang.reflect.Field;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -128,7 +120,6 @@ public class CriticChildFragment extends BaseFragment {
         } else {
             Log.e(TAG, "setView: 没有网络");
             //没有网络，友情提示，获取数据库中的数据
-            Snackbar.make(getView(),"",Snackbar.LENGTH_SHORT).show();
 
             Toast.makeText(getActivity(), "当前网络状态不稳定，无法刷新", Toast.LENGTH_SHORT).show();
 
