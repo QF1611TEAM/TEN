@@ -73,9 +73,6 @@ public class DiagramShowFragment extends Fragment {
 
             @Override
             public void onSuccess(DiagramBeanShow result) {
-//                Log.e(TAG, "onSuccess: "+"111111111111111111" );
-//                Log.e(TAG, "onSuccess: "+result.getId()+result.getTitle()+result.getAuthor() );
-
                 //更新UI
                 mTitle.setText(result.getTitle());
                 x.image().bind(mImage, "http://api.shigeten.net/" + result.getImage1(), options);

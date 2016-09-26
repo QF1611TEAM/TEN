@@ -68,14 +68,7 @@ public class MineFragment extends BaseFragment implements Handler.Callback,View.
 
     @Override
     public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-        Log.e(TAG, "onComplete: ");
 
-//        Set<String> keys = hashMap.keySet();
-//
-//        for (String key : keys) {
-//            Object value = hashMap.get(key);
-//            Log.e(TAG, "onComplete: "+key +"---->"+ value);
-//        }
         String data []={(String) hashMap.get("figureurl_qq_2"), (String) hashMap.get("nickname")};
         Message obtain = Message.obtain();
         obtain.what = 100;
@@ -93,6 +86,7 @@ public class MineFragment extends BaseFragment implements Handler.Callback,View.
         Log.e(TAG, "onCancel: ");
     }
 
+//    将获取的用户信息更新到UI
     @Override
     public boolean handleMessage(Message msg) {
         if (msg.what == 100) {

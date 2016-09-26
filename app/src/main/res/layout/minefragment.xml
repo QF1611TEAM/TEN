@@ -98,6 +98,7 @@
         android:layout_marginLeft="30dp"
         android:background="#999999"/>
     <LinearLayout
+        android:id="@+id/about_us"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginRight="30dp"
